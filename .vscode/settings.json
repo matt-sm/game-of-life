@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": "venv/bin/python3",
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+}
