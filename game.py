@@ -1,14 +1,15 @@
+import sys
 from terminaltables import AsciiTable
 import argparse
 
 
-def parse_args():
+def parse_args(args):
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-x", type=int, required=True)
     parser.add_argument("-y", type=int, required=True)
 
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 def seed_grid(x_axis, y_axis):
@@ -22,7 +23,7 @@ def print_grid(data):
 
 
 def main():
-    args = parse_args()
+    args = parse_args(sys.argv[1:])
     data = seed_grid(args.x, args.y)
     print_grid(data)
 
