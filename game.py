@@ -1,6 +1,14 @@
 import sys
 from terminaltables import AsciiTable
 import argparse
+from ast import literal_eval as make_tuple
+
+
+def parse_cells_arg(s):
+    try:
+        return list(make_tuple(s.strip()))
+    except:
+        raise argparse.ArgumentTypeError("Cells must be x,y")
 
 
 def parse_args(args):
@@ -8,7 +16,7 @@ def parse_args(args):
 
     parser.add_argument("-x", type=int, required=True)
     parser.add_argument("-y", type=int, required=True)
-
+    parser.add_argument("-c", help="Cells", dest="cells", type=parse_cells_arg)
     return parser.parse_args(args)
 
 

@@ -4,11 +4,12 @@ from game import seed_grid, parse_args
 
 def test_parser():
     with pytest.raises(BaseException):
-        parse_args(["-x", "-y"])
+        parse_args(["-x", "-y", "-c"])
 
-    args = parse_args(["-x 10", "-y 20"])
+    args = parse_args(["-x 10", "-y 20", "-c (1,1),(2,2),(5,4)"])
     assert args.x == 10
     assert args.y == 20
+    assert args.cells == [(1, 1), (2, 2), (5, 4)]
 
 
 def test_seed():
