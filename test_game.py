@@ -1,5 +1,5 @@
 import pytest
-from game import seed_grid, parse_args
+from game import seed_grid, parse_args, print_grid
 
 
 def test_parser():
@@ -9,14 +9,21 @@ def test_parser():
     args = parse_args(["-x 10", "-y 20", "-c (1,1),(2,2),(5,4)"])
     assert args.x == 10
     assert args.y == 20
-    assert args.cells == [(1, 1), (2, 2), (5, 4)]
+    assert args.cells == [[(1, 1), (2, 2), (5, 4)]]
 
 
 def test_seed():
-    grid = seed_grid(10, 20)
-    assert len(grid) == 20
-    assert len(grid[0]) == 10
+    grid = seed_grid(10, 20, [(0, 0), (9, 19)])
+    assert len(grid) == 10
+    assert len(grid[0]) == 20
+    assert grid[0][0] == "L"
+    assert grid[9][19] == "L"
+    assert grid[1][19] == " "
 
-    grid = seed_grid(5, 2)
-    assert len(grid) == 2
-    assert len(grid[0]) == 5
+
+def test_print(capsys):
+    grid = seed_grid(2, 2, [(0, 0)])
+    print_grid(grid)
+
+    captured = capsys.readouterr()
+    assert captured.out == "|L| |\n| | |\n"
