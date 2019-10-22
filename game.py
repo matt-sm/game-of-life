@@ -37,6 +37,26 @@ def print_grid(data):
         print("|")
 
 
+def get_neighbours(data, cell):
+    neighbours = []
+    for x in range(cell[0] - 1, cell[0] + 2):
+        for y in range(cell[1] - 1, cell[1] + 2):
+            if x == cell[0] and y == cell[1]:
+                continue
+            if x == len(data):
+                x = 0
+            if x < 0:
+                x = len(data) - 1
+            if y < 0:
+                y = len(data[0]) - 1
+            if y == len(data[0]):
+                y = 0
+
+            neighbours.append((x, y))
+
+    return neighbours
+
+
 def main():
     args = parse_args(sys.argv[1:])
     data = seed_grid(args.x, args.y, args.cells)

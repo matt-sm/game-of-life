@@ -1,5 +1,5 @@
 import pytest
-from game import seed_grid, parse_args, print_grid
+from game import seed_grid, parse_args, print_grid, get_neighbours
 
 
 def test_parser():
@@ -27,3 +27,66 @@ def test_print(capsys):
 
     captured = capsys.readouterr()
     assert captured.out == "|L| |\n| | |\n"
+
+
+def test_neighbours():
+    grid = seed_grid(4, 4, [])
+    neighbours = get_neighbours(grid, (1, 1))
+    assert neighbours == [
+        (0, 0),
+        (0, 1),
+        (0, 2),
+        (1, 0),
+        (1, 2),
+        (2, 0),
+        (2, 1),
+        (2, 2),
+    ]
+
+    neighbours = get_neighbours(grid, (3, 2))
+    assert neighbours == [
+        (2, 1),
+        (2, 2),
+        (2, 3),
+        (3, 1),
+        (3, 3),
+        (0, 1),
+        (0, 2),
+        (0, 3),
+    ]
+
+    neighbours = get_neighbours(grid, (0, 2))
+    assert neighbours == [
+        (3, 1),
+        (3, 2),
+        (3, 3),
+        (0, 1),
+        (0, 3),
+        (1, 1),
+        (1, 2),
+        (1, 3),
+    ]
+
+    neighbours = get_neighbours(grid, (2, 0))
+    assert neighbours == [
+        (1, 3),
+        (1, 0),
+        (1, 1),
+        (2, 3),
+        (2, 1),
+        (3, 3),
+        (3, 0),
+        (3, 1),
+    ]
+
+    neighbours = get_neighbours(grid, (2, 3))
+    assert neighbours == [
+        (1, 2),
+        (1, 3),
+        (1, 0),
+        (2, 2),
+        (2, 0),
+        (3, 2),
+        (3, 3),
+        (3, 0),
+    ]
