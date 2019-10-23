@@ -41,25 +41,27 @@ def print_grid(data):
         print("|")
 
 
+def adjust_overlap(coord, count):
+    if coord == count:
+        coord = 0
+    if coord < 0:
+        coord = count - 1
+
+    return coord
+
+
 def get_neighbours(data, cell):
     neighbours = []
     live_neighbours = 0
     for x in range(cell[0] - 1, cell[0] + 2):
         for y in range(cell[1] - 1, cell[1] + 2):
-            if x == cell[0] and y == cell[1]:
-                continue
-            if x == len(data):
-                x = 0
-            if x < 0:
-                x = len(data) - 1
-            if y < 0:
-                y = len(data[0]) - 1
-            if y == len(data[0]):
-                y = 0
+            if not (x == cell[0] and y == cell[1]):
+                x = adjust_overlap(x, len(data))
+                y = adjust_overlap(y, len(data[0]))
 
-            neighbours.append((x, y))
-            if data[x][y] == "L":
-                live_neighbours += 1
+                neighbours.append((x, y))
+                if data[x][y] == "L":
+                    live_neighbours += 1
 
     return neighbours, live_neighbours
 
