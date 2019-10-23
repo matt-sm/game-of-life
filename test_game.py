@@ -31,7 +31,7 @@ def test_print(capsys):
 
 def test_neighbours():
     grid = seed_grid(4, 4, [])
-    neighbours = get_neighbours(grid, (1, 1))
+    neighbours, _ = get_neighbours(grid, (1, 1))
     assert neighbours == [
         (0, 0),
         (0, 1),
@@ -43,7 +43,7 @@ def test_neighbours():
         (2, 2),
     ]
 
-    neighbours = get_neighbours(grid, (3, 2))
+    neighbours, _ = get_neighbours(grid, (3, 2))
     assert neighbours == [
         (2, 1),
         (2, 2),
@@ -55,7 +55,7 @@ def test_neighbours():
         (0, 3),
     ]
 
-    neighbours = get_neighbours(grid, (0, 2))
+    neighbours, _ = get_neighbours(grid, (0, 2))
     assert neighbours == [
         (3, 1),
         (3, 2),
@@ -67,7 +67,7 @@ def test_neighbours():
         (1, 3),
     ]
 
-    neighbours = get_neighbours(grid, (2, 0))
+    neighbours, _ = get_neighbours(grid, (2, 0))
     assert neighbours == [
         (1, 3),
         (1, 0),
@@ -79,7 +79,7 @@ def test_neighbours():
         (3, 1),
     ]
 
-    neighbours = get_neighbours(grid, (2, 3))
+    neighbours, _ = get_neighbours(grid, (2, 3))
     assert neighbours == [
         (1, 2),
         (1, 3),
