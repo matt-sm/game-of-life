@@ -3,13 +3,14 @@ import argparse
 from ast import literal_eval as make_tuple
 import time
 import copy
+import os
 
 
 def parse_cells_arg(s):
     try:
         return list(make_tuple(s.strip()))
     except:
-        raise argparse.ArgumentTypeError("Cells must be 'y,x y,x,...")
+        raise argparse.ArgumentTypeError("Cells must be 'x,y x,y,...")
 
 
 def parse_args(args):
@@ -20,6 +21,7 @@ def parse_args(args):
     parser.add_argument(
         "-c", help="Cells", dest="cells", type=parse_cells_arg, required=True, nargs="*"
     )
+
     return parser.parse_args(args)
 
 
@@ -32,6 +34,7 @@ def seed_grid(x_axis, y_axis, cells):
 
 
 def print_grid(data):
+    os.system("clear")
     for y, row in enumerate(data):
         for x, _ in enumerate(row):
             print("|" + data[x][y], end="")
@@ -61,18 +64,24 @@ def get_neighbours(data, cell):
     return neighbours, live_neighbours
 
 
+def live_or_die(status, live_neighbours):
+    if status == "L":
+        if live_neighbours < 2 or live_neighbours > 3:
+            return " "
+    else:
+        if live_neighbours == 3:
+            return "L"
+
+    return status
+
+
 def generate(data):
     next_gen = copy.deepcopy(data)
     for x, row in enumerate(data):
-        for y, col in enumerate(row):
+        for y, status in enumerate(row):
             cell = (x, y)
             _, live_neighbours = get_neighbours(data, cell)
-            if col == "L":
-                if live_neighbours < 2 or live_neighbours > 3:
-                    next_gen[x][y] = " "
-            else:
-                if live_neighbours == 3:
-                    next_gen[x][y] = "L"
+            next_gen[x][y] = live_or_die(status, live_neighbours)
 
     return next_gen
 
@@ -80,12 +89,11 @@ def generate(data):
 def main():
     args = parse_args(sys.argv[1:])
     data = seed_grid(args.x, args.y, args.cells)
-    print_grid(data)
 
     starttime = time.time()
     while True:
-        data = generate(data)
         print_grid(data)
+        data = generate(data)
 
         time.sleep(1.0 - ((time.time() - starttime) % 1.0))
 
