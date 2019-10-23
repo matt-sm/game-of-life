@@ -24,8 +24,7 @@ def parse_args(args):
 
 
 def seed_grid(x_axis, y_axis, cells):
-    grid = [[" " for x in range(y_axis)] for y in range(x_axis)]
-
+    grid = [[" " for y in range(y_axis)] for x in range(x_axis)]
     for cell in cells:
         grid[cell[0]][cell[1]] = "L"
 
@@ -33,9 +32,9 @@ def seed_grid(x_axis, y_axis, cells):
 
 
 def print_grid(data):
-    for x in data:
-        for y in x:
-            print("|" + y, end="")
+    for y, row in enumerate(data):
+        for x, _ in enumerate(row):
+            print("|" + data[x][y], end="")
         print("|")
 
 

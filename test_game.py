@@ -22,11 +22,11 @@ def test_seed():
 
 
 def test_print(capsys):
-    grid = seed_grid(2, 2, [(0, 0)])
+    grid = seed_grid(4, 4, [(1, 2)])
     print_grid(grid)
 
     captured = capsys.readouterr()
-    assert captured.out == "|L| |\n| | |\n"
+    assert captured.out == "| | | | |\n| | | | |\n| |L| | |\n| | | | |\n"
 
 
 def test_neighbours():
