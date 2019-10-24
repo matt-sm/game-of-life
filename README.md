@@ -1,6 +1,12 @@
 # game-of-life
 Conway's Game of Life
 
+## Run tests
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r dev-requirements.txt
+```
 ## Examples
 Blinker
 ```
