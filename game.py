@@ -25,19 +25,20 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def seed_grid(x_axis, y_axis, cells):
-    grid = [[" " for y in range(y_axis)] for x in range(x_axis)]
+def seed_grid(x, y, cells):
+    life = [[" " for i in range(y)] for i in range(x)]
+
     for cell in cells:
-        grid[cell[0]][cell[1]] = "L"
+        life[cell[0]][cell[1]] = "L"
 
-    return grid
+    return life
 
 
-def print_grid(data):
+def print_grid(life):
     os.system("clear")
-    for y, row in enumerate(data):
-        for x, _ in enumerate(row):
-            print("|" + data[x][y], end="")
+    for i in range(len(life)):
+        for j in range(len(life[i])):
+            print("|" + life[j][i], end="")
         print("|")
 
 
@@ -50,20 +51,18 @@ def adjust_overlap(coord, count):
     return coord
 
 
-def get_neighbours(data, cell):
-    neighbours = []
+def get_neighbours(life, x, y):
     live_neighbours = 0
-    for x in range(cell[0] - 1, cell[0] + 2):
-        for y in range(cell[1] - 1, cell[1] + 2):
-            if not (x == cell[0] and y == cell[1]):
-                x = adjust_overlap(x, len(data))
-                y = adjust_overlap(y, len(data[0]))
+    for i in range(x - 1, x + 2):
+        for j in range(y - 1, y + 2):
+            if not (i == x and j == y):
+                i = adjust_overlap(i, len(life))
+                j = adjust_overlap(j, len(life[0]))
 
-                neighbours.append((x, y))
-                if data[x][y] == "L":
+                if life[i][j] == "L":
                     live_neighbours += 1
 
-    return neighbours, live_neighbours
+    return live_neighbours
 
 
 def live_or_die(status, live_neighbours):
@@ -77,25 +76,25 @@ def live_or_die(status, live_neighbours):
     return status
 
 
-def generate(data):
-    next_gen = copy.deepcopy(data)
-    for x, row in enumerate(data):
-        for y, status in enumerate(row):
-            cell = (x, y)
-            _, live_neighbours = get_neighbours(data, cell)
-            next_gen[x][y] = live_or_die(status, live_neighbours)
+def generate(life):
+    next_gen = copy.deepcopy(life)
+
+    for i in range(len(life)):
+        for j in range(len(life[i])):
+            live_neighbours = get_neighbours(life, i, j)
+            next_gen[i][j] = live_or_die(life[i][j], live_neighbours)
 
     return next_gen
 
 
 def main():
     args = parse_args(sys.argv[1:])
-    data = seed_grid(args.x, args.y, args.cells)
+    life = seed_grid(args.x, args.y, args.cells)
 
     starttime = time.time()
     while True:
-        print_grid(data)
-        data = generate(data)
+        print_grid(life)
+        life = generate(life)
 
         time.sleep(1.0 - ((time.time() - starttime) % 1.0))
 
